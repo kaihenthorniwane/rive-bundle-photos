@@ -8,10 +8,16 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+      spacing: {
+        "4.5": "1.125rem",
+      },
+      fontFamily: {
+        "brahma-ultra-bold": ["BrahmaRounded-Ultrabold", "sans-serif"],
+      },
+      colors: {
+        "my-light-blue": "var(--My-Light-Blue)",
+        "my-white": "var(--My-White)",
+        "text-black": "var(--Text-Black)",
       },
     },
   },
