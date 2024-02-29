@@ -4,6 +4,10 @@
 
 :root {
   --My-Light-Blue: #d9dffb;
+  --My-Blue: #4357c4;
+  --My-Blue-Hover: #6778da;
+  --My-Blue-Press: #263798;
+  --My-Red: #c44343;
   --My-White: #ffffff;
   --Text-Black: #152044;
 }
