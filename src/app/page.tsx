@@ -36,7 +36,7 @@ export default function Home() {
       setSelectedImages([]);
     }
 
-    if (!isImageSelectorOpen) {
+    if (!isImageSelectorOpen && (!inputtedText || !isInputtedTextValid)) {
       setIsImageSelectorOpen(true);
     }
   };
@@ -87,7 +87,12 @@ export default function Home() {
     <main className="fixed left-0 bottom-0 right-0 top-0 flex items-center justify-center bg-my-light-blue p-5">
       <div className="h-full max-h-[40rem] aspect-[380/628] flex-shrink bg-my-white rounded-3xl flex flex-col flex-end overflow-hidden">
         <div className="flex flex-col gap-4.5 p-2.5 h-full"></div>
-        <div className="flex gap-2 items-start p-2.5 ">
+        <div
+          className={
+            "flex gap-2  p-2.5 " +
+            (isImageSelectorOpen ? "items-center" : "items-start")
+          }
+        >
           {isImageSelectorOpen && (
             <>
               <motion.span
