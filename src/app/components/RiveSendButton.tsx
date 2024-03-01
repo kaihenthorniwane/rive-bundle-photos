@@ -23,18 +23,21 @@ export default function RiveSendButton({
   const isPictureInput = useStateMachineInput(rive, "Send Button", "Picture");
 
   useEffect(() => {
-    if (isPictureInput) {
-      isPictureInput.value = !isImageSelectorOpen;
-    }
-  }, [isImageSelectorOpen, isPictureInput]);
-
-  useEffect(() => {
-    if (isImageSelectorOpen && !areEnoughImagesSelected) {
-      setIsButtonClickable(false);
-    } else {
+    if (isImageSelectorOpen && isPictureInput && areEnoughImagesSelected) {
       setIsButtonClickable(true);
+      isPictureInput.value = false;
+    } else if (
+      isImageSelectorOpen &&
+      isPictureInput &&
+      !areEnoughImagesSelected
+    ) {
+      setIsButtonClickable(false);
+      isPictureInput.value = true;
+    } else if (isPictureInput) {
+      setIsButtonClickable(true);
+      isPictureInput.value = true;
     }
-  }, [isImageSelectorOpen, areEnoughImagesSelected]);
+  }, [isImageSelectorOpen, areEnoughImagesSelected, isPictureInput]);
 
   return (
     <div

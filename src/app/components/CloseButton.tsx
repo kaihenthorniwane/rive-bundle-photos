@@ -25,7 +25,7 @@ export default function CloseButton({
       <motion.path
         initial={{ rotateZ: 90 }}
         animate={{ rotateZ: 0 }}
-        transition={{ ease: [0.08, 0.99, 0.09, 1] }}
+        transition={{ ease: "circOut" }}
         d="M18 15L36 33M36 15L18 33"
         stroke="white"
         strokeWidth="4"
