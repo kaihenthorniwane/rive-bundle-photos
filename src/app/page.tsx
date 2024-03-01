@@ -21,7 +21,10 @@ const sourceImages: ImageObj[] = [
 ];
 
 export default function Home() {
+  const [inputtedText, setInputtedText] = useState<string | null>(null);
   const [selectedImages, setSelectedImages] = useState<ImageObj[]>([]);
+  const [isInputtedTextValid, setIsInputtedTextValid] =
+    useState<boolean>(false);
   const [isImageSelectorOpen, setIsImageSelectorOpen] =
     useState<boolean>(false);
   const [areEnoughImagesSelected, setAreEnoughImagesSelected] =
@@ -30,6 +33,7 @@ export default function Home() {
   const handleRiveSendButtonPress = (): void => {
     if (isImageSelectorOpen && areEnoughImagesSelected) {
       setIsImageSelectorOpen(false);
+      setSelectedImages([]);
     }
 
     if (!isImageSelectorOpen) {
@@ -59,6 +63,10 @@ export default function Home() {
     }
   };
 
+  const handleInputUpdate = (textVal: string | null) => {
+    setInputtedText(textVal);
+  };
+
   useEffect(() => {
     if (selectedImages.length > 0) {
       setAreEnoughImagesSelected(true);
@@ -66,6 +74,14 @@ export default function Home() {
       setAreEnoughImagesSelected(false);
     }
   }, [selectedImages]);
+
+  useEffect(() => {
+    if (inputtedText && inputtedText.length > 0) {
+      setIsInputtedTextValid(true);
+    } else {
+      setIsInputtedTextValid(false);
+    }
+  }, [inputtedText]);
 
   return (
     <main className="fixed left-0 bottom-0 right-0 top-0 flex items-center justify-center bg-my-light-blue p-5">
@@ -85,11 +101,14 @@ export default function Home() {
             </>
           )}
 
-          {!isImageSelectorOpen && <TextAreaInput />}
+          {!isImageSelectorOpen && (
+            <TextAreaInput handleInputUpdate={handleInputUpdate} />
+          )}
           <RiveSendButton
             handleClick={handleRiveSendButtonPress}
             isImageSelectorOpen={isImageSelectorOpen}
             areEnoughImagesSelected={areEnoughImagesSelected}
+            isInputtedTextValid={isInputtedTextValid}
           />
         </div>
 

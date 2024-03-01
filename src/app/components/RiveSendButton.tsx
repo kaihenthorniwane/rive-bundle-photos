@@ -5,10 +5,12 @@ import { useEffect, useState } from "react";
 
 export default function RiveSendButton({
   handleClick = () => {},
+  isInputtedTextValid,
   isImageSelectorOpen,
   areEnoughImagesSelected,
 }: {
   handleClick?: () => void;
+  isInputtedTextValid: boolean;
   isImageSelectorOpen: boolean;
   areEnoughImagesSelected: boolean;
 }) {
@@ -33,11 +35,19 @@ export default function RiveSendButton({
     ) {
       setIsButtonClickable(false);
       isPictureInput.value = true;
-    } else if (isPictureInput) {
+    } else if (!isImageSelectorOpen && isInputtedTextValid && isPictureInput) {
+      setIsButtonClickable(true);
+      isPictureInput.value = false;
+    } else if (!isImageSelectorOpen && !isInputtedTextValid && isPictureInput) {
       setIsButtonClickable(true);
       isPictureInput.value = true;
     }
-  }, [isImageSelectorOpen, areEnoughImagesSelected, isPictureInput]);
+  }, [
+    isImageSelectorOpen,
+    areEnoughImagesSelected,
+    isInputtedTextValid,
+    isPictureInput,
+  ]);
 
   return (
     <div

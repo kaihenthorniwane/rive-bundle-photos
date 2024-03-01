@@ -1,7 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import InputBack from "./InputBack";
 
-export default function TextAreaInput() {
+export default function TextAreaInput({
+  handleInputUpdate,
+}: {
+  handleInputUpdate: (textVal: string) => void;
+}) {
   const [isInputFocused, setIsInputFocused] = useState<boolean>(false);
   const [text, setText] = useState<string>("");
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
@@ -13,6 +17,7 @@ export default function TextAreaInput() {
     event: React.ChangeEvent<HTMLTextAreaElement>
   ): void => {
     setText(event.target.value);
+    handleInputUpdate(event.target.value);
     adjustTextareaHeight();
   };
 
