@@ -83,13 +83,11 @@ export default function TextBubble({
       }
       key={msg.id}
     >
-      <div className="break-words relative px-6 flex pt-4 pb-6 items-center h-[4.75rem]">
+      <div className="break-words text-center relative px-6 flex pt-4 pb-6 justify-center items-center h-[4.75rem] min-w-28">
         <span ref={textRef} className="relative z-10 text-my-white">
           {msg.text}
         </span>
-        <TextBubbleBackSmall
-          showTail={msg.text.length >= 9 ? showTail : false}
-        />
+        <TextBubbleBackSmall showTail={showTail} />
       </div>
     </div>
   );
