@@ -134,11 +134,17 @@ export default function Home() {
           {messages.messages.map((msg, index) => {
             if (msg.messageType === "text") {
               return (
-                <TextBubble
-                  key={msg.id}
-                  msg={msg}
-                  showTail={index === messages.messages.length - 1}
-                />
+                <motion.div
+                  initial={{ y: "1rem" }}
+                  animate={{ y: "0rem" }}
+                  transition={{ duration: 0.5, ease: [0.08, 0.99, 0.09, 1] }}
+                >
+                  <TextBubble
+                    key={msg.id}
+                    msg={msg}
+                    showTail={index === messages.messages.length - 1}
+                  />
+                </motion.div>
               );
             }
           })}
