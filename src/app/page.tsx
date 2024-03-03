@@ -169,7 +169,11 @@ export default function Home() {
               >
                 <div className="ml-20 flex flex-col gap-2 items-end relative ">
                   {msg.images.map((img) => (
-                    <img className="max-w-40 rounded-2xl" src={img.imageURL} />
+                    <img
+                      key={img.id}
+                      className="max-w-40 rounded-2xl"
+                      src={img.imageURL}
+                    />
                   ))}
                 </div>
               </motion.div>
