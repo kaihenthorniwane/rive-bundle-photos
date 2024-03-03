@@ -87,7 +87,9 @@ export default function TextBubble({
         <span ref={textRef} className="relative z-10 text-my-white">
           {msg.text}
         </span>
-        <TextBubbleBackSmall showTail={showTail} />
+        <TextBubbleBackSmall
+          showTail={msg.text.length >= 9 ? showTail : false}
+        />
       </div>
     </div>
   );
