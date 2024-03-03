@@ -135,12 +135,12 @@ export default function Home() {
             if (msg.messageType === "text") {
               return (
                 <motion.div
+                  key={msg.id}
                   initial={{ y: "1rem" }}
                   animate={{ y: "0rem" }}
                   transition={{ duration: 0.5, ease: [0.08, 0.99, 0.09, 1] }}
                 >
                   <TextBubble
-                    key={msg.id}
                     msg={msg}
                     showTail={index === messages.messages.length - 1}
                   />
