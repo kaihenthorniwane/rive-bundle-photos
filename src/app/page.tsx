@@ -59,6 +59,19 @@ export default function Home() {
   const handleRiveSendButtonPress = (): void => {
     if (isImageSelectorOpen && areEnoughImagesSelected) {
       setIsImageSelectorOpen(false);
+      setMessages((prevValue) => {
+        return {
+          currentIteration: prevValue.currentIteration + 1,
+          messages: [
+            ...prevValue.messages,
+            {
+              messageType: "image",
+              id: `${prevValue.currentIteration + 1}`,
+              images: selectedImages,
+            },
+          ],
+        };
+      });
       setSelectedImages([]);
     }
 
@@ -147,6 +160,20 @@ export default function Home() {
                 </motion.div>
               );
             }
+            return (
+              <motion.div
+                key={msg.id}
+                initial={{ x: "1rem" }}
+                animate={{ x: "0rem" }}
+                transition={{ duration: 1, ease: [0.08, 0.99, 0.09, 1] }}
+              >
+                <div className="ml-20 flex flex-col gap-2 items-end relative ">
+                  {msg.images.map((img) => (
+                    <img className="max-w-40 rounded-2xl" src={img.imageURL} />
+                  ))}
+                </div>
+              </motion.div>
+            );
           })}
         </div>
         <div
