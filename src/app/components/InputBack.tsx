@@ -1,6 +1,6 @@
 export default function InputBack() {
   return (
-    <div className=" grid grid-cols-[1.375rem,auto,1.375rem] grid-rows-[1.375rem,auto,1.375rem] absolute left-0 top-0 right-0 bottom-0 w-full h-full ">
+    <div className=" grid grid-cols-[1.375rem,auto,1.375rem] bg-my-white rounded-full grid-rows-[1.375rem,auto,1.375rem] absolute left-0 top-0 right-0 bottom-0 w-full h-full ">
       <svg
         width="22"
         height="22"

@@ -3,11 +3,12 @@ import InputBack from "./InputBack";
 
 export default function TextAreaInput({
   handleInputUpdate,
+  inputtedText,
 }: {
   handleInputUpdate: (textVal: string) => void;
+  inputtedText: string;
 }) {
   const [isInputFocused, setIsInputFocused] = useState<boolean>(false);
-  const [text, setText] = useState<string>("");
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
   const handleFocus = (): void => setIsInputFocused(true);
@@ -16,7 +17,6 @@ export default function TextAreaInput({
   const handleTextAreaChange = (
     event: React.ChangeEvent<HTMLTextAreaElement>
   ): void => {
-    setText(event.target.value);
     handleInputUpdate(event.target.value);
     adjustTextareaHeight();
   };
@@ -41,11 +41,11 @@ export default function TextAreaInput({
     window.addEventListener("resize", handleResize);
 
     return () => window.removeEventListener("resize", handleResize);
-  }, [text]);
+  }, [inputtedText]);
 
   useEffect(() => {
     adjustTextareaHeight();
-  }, [text]);
+  }, [inputtedText]);
   return (
     <div
       className={
@@ -60,7 +60,7 @@ export default function TextAreaInput({
         onBlur={handleBlur}
         onChange={handleTextAreaChange}
         style={{ height: "1px" }}
-        value={text}
+        value={inputtedText}
       />
       <InputBack />
     </div>

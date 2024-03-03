@@ -6,11 +6,33 @@ import CloseButton from "./components/CloseButton";
 import RiveSendButton from "./components/RiveSendButton";
 import SelectableImage from "./components/SelectableImage";
 import TextAreaInput from "./components/TextAreaInput";
+import TextBubble from "./components/TextBubble";
+import TextBubbleBackLarge from "./components/TextBubbleBackLarge";
 
 export type ImageObj = {
   id: string;
   imageURL: string;
 };
+
+export type TextMessageProps = {
+  messageType: "text";
+  id: string;
+  text: string;
+};
+
+export type ImageMessageProps = {
+  messageType: "image";
+  id: string;
+  images: ImageObj[];
+};
+
+type MessageProps = TextMessageProps | ImageMessageProps;
+
+type MessageArray = {
+  currentIteration: number;
+  messages: MessageProps[];
+};
+
 const sourceImages: ImageObj[] = [
   { id: "1", imageURL: "/webp/Sample-Image-1.webp" },
   { id: "2", imageURL: "/webp/Sample-Image-2.webp" },
@@ -21,7 +43,11 @@ const sourceImages: ImageObj[] = [
 ];
 
 export default function Home() {
-  const [inputtedText, setInputtedText] = useState<string | null>(null);
+  const [messages, setMessages] = useState<MessageArray>({
+    currentIteration: 1,
+    messages: [],
+  });
+  const [inputtedText, setInputtedText] = useState<string>("");
   const [selectedImages, setSelectedImages] = useState<ImageObj[]>([]);
   const [isInputtedTextValid, setIsInputtedTextValid] =
     useState<boolean>(false);
@@ -39,10 +65,28 @@ export default function Home() {
     if (!isImageSelectorOpen && (!inputtedText || !isInputtedTextValid)) {
       setIsImageSelectorOpen(true);
     }
+
+    if (!isImageSelectorOpen && isInputtedTextValid && inputtedText) {
+      setMessages((prevValue) => {
+        return {
+          currentIteration: prevValue.currentIteration + 1,
+          messages: [
+            ...prevValue.messages,
+            {
+              messageType: "text",
+              id: `${prevValue.currentIteration + 1}`,
+              text: inputtedText,
+            },
+          ],
+        };
+      });
+      setInputtedText("");
+    }
   };
 
   const handleCloseButtonPress = (): void => {
     setIsImageSelectorOpen(false);
+    setSelectedImages([]);
   };
 
   const handleToggleSelected = (id: string): void => {
@@ -63,7 +107,7 @@ export default function Home() {
     }
   };
 
-  const handleInputUpdate = (textVal: string | null) => {
+  const handleInputUpdate = (textVal: string) => {
     setInputtedText(textVal);
   };
 
@@ -85,11 +129,23 @@ export default function Home() {
 
   return (
     <main className="fixed left-0 bottom-0 right-0 top-0 flex items-center justify-center bg-my-light-blue p-5">
-      <div className="h-full max-h-[40rem] aspect-[380/628] flex-shrink bg-my-white rounded-3xl flex flex-col flex-end overflow-hidden">
-        <div className="flex flex-col gap-4.5 p-2.5 h-full"></div>
+      <div className="h-full max-h-[40rem] aspect-[380/628] flex-shrink bg-my-white rounded-3xl flex justify-end flex-col overflow-hidden">
+        <div className="flex flex-col justify-end gap-2 p-2.5 h-full">
+          {messages.messages.map((msg, index) => {
+            if (msg.messageType === "text") {
+              return (
+                <TextBubble
+                  key={msg.id}
+                  msg={msg}
+                  showTail={index === messages.messages.length - 1}
+                />
+              );
+            }
+          })}
+        </div>
         <div
           className={
-            "flex gap-2  p-2.5 " +
+            "relative z-50 flex gap-2  p-2.5 " +
             (isImageSelectorOpen ? "items-center" : "items-start")
           }
         >
@@ -107,7 +163,10 @@ export default function Home() {
           )}
 
           {!isImageSelectorOpen && (
-            <TextAreaInput handleInputUpdate={handleInputUpdate} />
+            <TextAreaInput
+              handleInputUpdate={handleInputUpdate}
+              inputtedText={inputtedText}
+            />
           )}
           <RiveSendButton
             handleClick={handleRiveSendButtonPress}
