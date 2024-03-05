@@ -3,6 +3,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import CloseButton from "./components/CloseButton";
+import RiveBundlePhotos from "./components/RiveBundlePhotos";
 import RiveSendButton from "./components/RiveSendButton";
 import SelectableImage from "./components/SelectableImage";
 import TextAreaInput from "./components/TextAreaInput";
@@ -159,6 +160,9 @@ export default function Home() {
                   />
                 </motion.div>
               );
+            }
+            if (msg.images.length >= 3) {
+              return <RiveBundlePhotos msg={msg} key={msg.id} />;
             }
             return (
               <motion.div
