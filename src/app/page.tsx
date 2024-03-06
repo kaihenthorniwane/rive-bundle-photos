@@ -143,7 +143,7 @@ export default function Home() {
 
   return (
     <main className="fixed left-0 bottom-0 right-0 top-0 flex items-center justify-center bg-my-light-blue p-5">
-      <div className="h-full max-h-[40rem] aspect-[380/628] flex-shrink bg-my-white rounded-3xl flex justify-end flex-col overflow-hidden">
+      <div className="h-full max-h-[40rem] aspect-[380/628] flex-shrink bg-my-white rounded-3xl flex justify-end flex-col overflow-hidden relative">
         <div className="flex flex-col justify-end gap-2 p-2.5 h-full">
           {messages.messages.map((msg, index) => {
             if (msg.messageType === "text") {

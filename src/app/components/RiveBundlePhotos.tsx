@@ -1,9 +1,15 @@
-import { decodeImage, type ImageAsset, useRive } from "@rive-app/react-canvas";
+import {
+  decodeImage,
+  type ImageAsset,
+  useRive,
+  useStateMachineInput,
+} from "@rive-app/react-canvas";
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { type ImageMessageProps } from "../page";
 
 export default function RiveBundlePhotos({ msg }: { msg: ImageMessageProps }) {
+  const [isOverflowHidden, setIsOverflowHidden] = useState<boolean>(true);
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
 
   const setImageAsset = (asset: ImageAsset, src: string) => {
@@ -15,7 +21,9 @@ export default function RiveBundlePhotos({ msg }: { msg: ImageMessageProps }) {
     });
   };
 
-  const handleOnClick = (): void => setIsExpanded((prevValue) => !prevValue);
+  const handleOnClick = (): void => {
+    setIsExpanded((prevValue) => !prevValue);
+  };
 
   const { rive, RiveComponent } = useRive({
     src: "/riv/bundled_images/bundled_images.riv",
@@ -40,6 +48,13 @@ export default function RiveBundlePhotos({ msg }: { msg: ImageMessageProps }) {
       }
     },
   });
+  const tiedInput = useStateMachineInput(rive, "Bundled Images", "Tied");
+
+  useEffect(() => {
+    if (tiedInput) {
+      tiedInput.value = !isExpanded;
+    }
+  }, [isExpanded, tiedInput]);
 
   return (
     <>
@@ -49,8 +64,8 @@ export default function RiveBundlePhotos({ msg }: { msg: ImageMessageProps }) {
       <motion.div
         className={
           isExpanded
-            ? "fixed left-0 top-0 right-0 bottom-0 z-[100] h-full w-full"
-            : "ml-20 flex justify-end relative "
+            ? "absolute left-0 top-0 right-0 bottom-0 z-[100] h-full w-full bg-white/75"
+            : "flex justify-end relative "
         }
         initial={{ x: "1rem" }}
         animate={{ x: "0rem" }}
@@ -59,13 +74,28 @@ export default function RiveBundlePhotos({ msg }: { msg: ImageMessageProps }) {
         <div
           className={
             (isExpanded ? "w-full h-full" : "w-[16.5rem] h-[18.75rem]") +
-            " flex justify-center items-center overflow-hidden"
+            " flex justify-center items-center " +
+            (isOverflowHidden ? "overflow-hidden" : "")
           }
           onClick={handleOnClick}
         >
-          <div className="aspect-square min-w-[67.5rem] max-w-[67.5rem]">
+          <motion.div
+            layout={true}
+            onLayoutAnimationStart={() => {
+              if (isExpanded) {
+                setIsOverflowHidden(false);
+              }
+            }}
+            onLayoutAnimationComplete={() => {
+              if (!isExpanded) {
+                setIsOverflowHidden(true);
+              }
+            }}
+            transition={{ duration: 0.5, ease: [0.08, 0.99, 0.09, 1] }}
+            className="aspect-square min-w-[67.5rem] max-w-[67.5rem]"
+          >
             <RiveComponent />
-          </div>
+          </motion.div>
         </div>
       </motion.div>
     </>
