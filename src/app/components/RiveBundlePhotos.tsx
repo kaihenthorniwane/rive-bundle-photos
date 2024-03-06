@@ -77,10 +77,29 @@ export default function RiveBundlePhotos({ msg }: { msg: ImageMessageProps }) {
             " flex justify-center items-center " +
             (isOverflowHidden ? "overflow-hidden" : "")
           }
-          onClick={handleOnClick}
+          onClick={!isExpanded ? handleOnClick : () => {}}
         >
+          {isExpanded && (
+            <div
+              className="text-text-black absolute right-5 top-5 active:scale-90 p-3"
+              onClick={handleOnClick}
+            >
+              <svg
+                width="22"
+                height="22"
+                viewBox="0 0 22 22"
+                fill="none"
+                stroke="currentColor"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M2 2L20 20" strokeWidth="4" strokeLinecap="round" />
+                <path d="M20 2L2 20" strokeWidth="4" strokeLinecap="round" />
+              </svg>
+            </div>
+          )}
+
           <motion.div
-            layout={true}
+            layout={"position"}
             onLayoutAnimationStart={() => {
               if (isExpanded) {
                 setIsOverflowHidden(false);
